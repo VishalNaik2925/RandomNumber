@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        body {
+            background-color: #333333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+        }
+        #display {
+            font-family: 'Digital-7', monospace;
+            font-size: 100px;
+            color: #00FF00;
+            background-color: #000000;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+        .flip-container {
+            display: inline-block;
+            perspective: 1000px;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .flip {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        .flip-front, .flip-back {
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 120px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background-color: #000000;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            transform: rotateY(0deg);
+        }
+        .flip-back {
+            transform: rotateY(180deg);
+        }
+        #generateButton {
+            font-size: 24px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #444444;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #generateButton:hover {
+            background-color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Number Generator </h1>
+    <div id="display">
+        <div class="flip-container">
+            <div class="flip flip-front">000</div>
+            <div class="flip flip-back">000</div>
+        </div>
+    </div>
+    <button id="generateButton">Generate</button>
+
+    <script>
+        const displayFront = document.querySelector('.flip-front');
+        const displayBack = document.querySelector('.flip-back');
+        const button = document.getElementById('generateButton');
+
+        button.addEventListener('click', () => {
+            const numbers = [...Array(192 - 138 + 1).keys()].map(i => i + 138).concat([...Array(409 - 400 + 1).keys()].map(i => i + 400));
+            const random_number = numbers[Math.floor(Math.random() * numbers.length)];
+            let steps = 20;
+            const delay = 100;
+
+            const animate = () => {
+                if (steps > 0) {
+                    displayFront.textContent = numbers[Math.floor(Math.random() * numbers.length)];
+                    displayBack.textContent = random_number;
+                    steps--;
+                    setTimeout(animate, delay);
+                } else {
+                    displayFront.textContent = random_number;
+                    displayBack.textContent = random_number;
+                }
+            };
+
+            animate();
+        });
+    </script>
+</body>
+</html>
